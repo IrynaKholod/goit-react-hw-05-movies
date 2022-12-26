@@ -1,6 +1,6 @@
 import { SearchBox } from 'components/SearchBox/SearchBox';
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useLocation} from 'react-router-dom';
 import { searchMovies } from '../../Api/Api';
 import { TrendsList, Poster } from '../Home/Home.styled';
 import { Loader } from '../../components/Loader/Loader';
@@ -11,6 +11,7 @@ export const Movies = () => {
   const [moviesList, setMoviesList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
   const query = searchParams.get('query') ?? '';
 
   useEffect(() => {
