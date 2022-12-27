@@ -1,13 +1,15 @@
+import PropTypes from 'prop-types';
 import { SearchBox } from 'components/SearchBox/SearchBox';
 import { useEffect, useState } from 'react';
-import { useSearchParams, useLocation} from 'react-router-dom';
+import { useSearchParams, useLocation } from 'react-router-dom';
 import { searchMovies } from '../../Api/Api';
 import { TrendsList, Poster } from '../Home/Home.styled';
 import { Loader } from '../../components/Loader/Loader';
 import { Container } from '../Layout/Layout.syled';
 import { SyledLink } from './Movies.syled';
+import noImage from '../../image/noImage.jpg';
 
-export const Movies = () => {
+const Movies = () => {
   const [moviesList, setMoviesList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -42,13 +44,17 @@ export const Movies = () => {
 
   return (
     <Container>
-      <SearchBox onChange={FindeMovie} />
+      <SearchBox onChange={FindeMovie} value={query} />
       <TrendsList>
         {moviesList.map(movie => (
           <li key={movie.id}>
             <SyledLink to={`/movies/${movie.id}`} state={{ from: location }}>
               <Poster
-                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                src={
+                  movie.poster_path
+                    ? `https://image.tmdb.org/t/p/w342${movie.poster_path}`
+                    : noImage
+                }
                 alt={movie.original_title}
               />
               <h3>{movie.original_title}</h3>
@@ -60,3 +66,9 @@ export const Movies = () => {
     </Container>
   );
 };
+
+Movies.propTypes = {
+  movie: PropTypes.arrayOf(PropTypes.string),
+};
+
+export default Movies;

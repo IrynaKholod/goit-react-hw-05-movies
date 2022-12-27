@@ -1,9 +1,11 @@
+import PropTypes from 'prop-types';
 import { getTrending } from '../../Api/Api';
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Loader } from 'components/Loader/Loader';
 import { TrendsList, HomeTitle, Poster, SyledLink } from './Home.styled';
 import { Container } from 'pages/Layout/Layout.syled';
+import noImage from '../../image/noImage.jpg';
 
 const Home = () => {
   const [trendMovies, setTrendMovies] = useState([]);
@@ -39,7 +41,11 @@ const Home = () => {
           <li key={movie.id}>
             <SyledLink to={`/movies/${movie.id}`} state={{ from: location }}>
               <Poster
-                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                src={
+                  movie.poster_path
+                    ? `https://image.tmdb.org/t/p/w200${movie.poster_path}`
+                    : noImage
+                }
                 alt={movie.original_title}
               />
               <h3>{movie.original_title}</h3>
@@ -51,6 +57,10 @@ const Home = () => {
       {isLoading && <Loader />}
     </Container>
   );
+};
+
+Home.propTypes = {
+  movie: PropTypes.arrayOf(PropTypes.string)
 };
 
 export default Home;

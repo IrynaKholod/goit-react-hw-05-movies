@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Link, useParams, useLocation, Outlet } from 'react-router-dom';
 import { useEffect, useState, Suspense } from 'react';
 import { getMovieDetails } from '../../Api/Api';
@@ -8,12 +9,12 @@ import {
   SyledLink,
 } from './MovieDetails.styled';
 import { Loader } from 'components/Loader/Loader';
+import noImage from '../../image/noImage.jpg';
 
-export const MovieDetails = () => {
+const MovieDetails = () => {
   const { movieId } = useParams();
   const [movie, setMovie] = useState(null);
   const [isLoading, setIsLoading] = useState('false');
-  // const [error, setError] = useState(null);
 
   const location = useLocation();
   const backLinkHref = location.state?.from ?? '/';
@@ -55,7 +56,11 @@ export const MovieDetails = () => {
         <SyledLink to={backLinkHref}>Go back</SyledLink>
         <FilmContainer>
           <img
-            src={`https://image.tmdb.org/t/p/w300${poster_path}`}
+            src={
+              poster_path
+                ? `https://image.tmdb.org/t/p/w200${poster_path}`
+                : noImage
+            }
             alt={tagline}
             width="300"
           />
@@ -99,55 +104,7 @@ export const MovieDetails = () => {
   );
 };
 
-// export const MovieDetails = ( ) =>{
-// const [movie, setMovie] = useState({})
-// const [isLoading, setIsLoading] = useState(false);
-// const { id } = useParams();
-// const location = useLocation();
-
-// useEffect(() => {
-
-//     async function fetchMovie () {
-//       setIsLoading('true');
-//       try {
-//         await getMovieDetails(id).then(responce => {
-//           setMovie(responce);
-//           setIsLoading('false');
-// });
-//       } catch(err) {
-//        console.log('error');
-//     }
-//     }
-//       fetchMovie ()
-
-//   }, [id]);
-
-//   const {original_title, release_date, genres, overview, vote_average, poster_path, tagline } = movie;
-
-//     return(
-//         <Container>
-//              <button type="button"> Go beack</button>
-//              <FilmContainer>
-//                 <img src={ `https://image.tmdb.org/t/p/w500${poster_path}`} alt={tagline} width="300"/>
-//              <h3>{ original_title}
-//             <span>{ (release_date) && ` (${new Date(release_date).getFullYear()})`}</span></h3>
-//              <p>User score <span>{` ${Math.ceil(Number(vote_average)*10)}%`}</span></p>
-//              <h4>Overview</h4>
-//              <p>{overview}</p>
-
-//              <h4>Genres</h4>
-//              <p>{genres}</p>
-//              </FilmContainer>
-//              <div>
-//                 <p>Additional information</p>
-//                 <ul>
-//                     <li><Link to={"cast"}  state={{...location.state }}>Cast</Link></li>
-//                     <li>   <Link to={"riviews"} state={{...location.state}}>Reviews</Link></li>
-//                 </ul>
-//                 {isLoading && <Loader/>}
-
-//              </div>
-//         </Container>
-
-//     )
-// }
+MovieDetails.propTypes = {
+  movie: PropTypes.arrayOf(PropTypes.string),
+};
+export default MovieDetails;

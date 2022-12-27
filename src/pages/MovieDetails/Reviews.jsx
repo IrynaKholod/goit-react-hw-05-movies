@@ -1,9 +1,11 @@
+import PropTypes from 'prop-types';
 import { getMovieReviews } from '../../Api/Api';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Loader } from 'components/Loader/Loader';
 
-export const Reviews = () => {
+
+const Reviews = () => {
   const [reviews, setRevievs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const { movieId } = useParams();
@@ -43,3 +45,7 @@ export const Reviews = () => {
     </ul>
   );
 };
+ Reviews.propTypes = {
+  reviews: PropTypes.arrayOf(PropTypes.string)
+};
+export default Reviews;

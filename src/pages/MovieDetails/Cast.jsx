@@ -1,10 +1,12 @@
+import PropTypes from 'prop-types';
 import { getMovieCredits } from '../../Api/Api';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Loader } from 'components/Loader/Loader';
 import { CastList } from './MovieDetails.styled';
+import noImage from '../../image/noImage.jpg'
 
-export const Cast = () => {
+const Cast = () => {
   const [castList, setCastList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const { movieId } = useParams();
@@ -34,7 +36,12 @@ export const Cast = () => {
           ({ id, profile_path, name, character }) => (
             <li key={id}>
               <img
-                src={`https://image.tmdb.org/t/p/w200${profile_path}`}
+                
+                src={
+                  profile_path
+                    ? `https://image.tmdb.org/t/p/w200${profile_path}`
+                    : noImage
+                }
                 alt={name}
                 loading="lazy"
                 width={120}
@@ -50,3 +57,8 @@ export const Cast = () => {
     </>
   );
 };
+
+Cast.propTypes = {
+  castList: PropTypes.arrayOf(PropTypes.string)
+};
+export default Cast;

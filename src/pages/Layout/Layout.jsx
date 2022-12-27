@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Container, Header, LinkMenu } from './Layout.syled';
 export const Layout = () => {
@@ -11,8 +12,9 @@ export const Layout = () => {
             <LinkMenu to="/movies">Movies</LinkMenu>
           </nav>
         </Header>
-
-        <Outlet />
+        <Suspense fallback={null}>
+          <Outlet />
+        </Suspense>
       </Container>
     </>
   );
